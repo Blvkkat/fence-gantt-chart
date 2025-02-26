@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Fence Project Gantt Chart</title>
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #gantt_chart {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="gantt_chart"></div>
+    <script>
+        gantt.init("gantt_chart");
+
+        gantt.parse({
+            data: [
+                { id: 1, text: "Acquire Materials", start_date: "26-02-2025", duration: 1, progress: 1 },
+                { id: 2, text: "Site Preparation", start_date: "27-02-2025", duration: 1 },
+                { id: 3, text: "Mark & Dig Post Holes", start_date: "28-02-2025", duration: 0.5 },
+                { id: 4, text: "Place & Secure Posts", start_date: "28-02-2025", duration: 0.5 },
+                { id: 5, text: "Pour Concrete & Set Posts", start_date: "28-02-2025", duration: 1 },
+                { id: 6, text: "Install 2x4 Rails", start_date: "01-03-2025", duration: 0.5 },
+                { id: 7, text: "Secure Rails w/ Brackets", start_date: "01-03-2025", duration: 0.5 },
+                { id: 8, text: "Attach Cedar Pickets", start_date: "02-03-2025", duration: 1 },
+                { id: 9, text: "Check & Adjust Alignment", start_date: "03-03-2025", duration: 0.5 },
+                { id: 10, text: "Clean-Up Site", start_date: "03-03-2025", duration: 0.5 },
+                { id: 11, text: "Inspection & Sign-Off", start_date: "04-03-2025", duration: 0.5 }
+            ]
+        });
+    </script>
+</body>
+</html>
