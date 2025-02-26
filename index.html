@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Fence Project Gantt Chart</title>
+    
+    <!-- DHTMLX Gantt Library -->
     <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
     <link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css">
+    
     <style>
         html, body {
             height: 100%;
@@ -14,30 +17,59 @@
         }
         #gantt_chart {
             width: 100%;
-            height: 100vh;
+            height: 90vh;
         }
     </style>
 </head>
 <body>
+
+    <h2 style="text-align: center;">Fence Installation Project - Editable Gantt Chart</h2>
     <div id="gantt_chart"></div>
+
     <script>
+        // Initialize Gantt Chart
         gantt.init("gantt_chart");
 
+        // Sample Task Data
         gantt.parse({
             data: [
                 { id: 1, text: "Acquire Materials", start_date: "26-02-2025", duration: 1, progress: 1 },
                 { id: 2, text: "Site Preparation", start_date: "27-02-2025", duration: 1 },
-                { id: 3, text: "Mark & Dig Post Holes", start_date: "28-02-2025", duration: 0.5 },
-                { id: 4, text: "Place & Secure Posts", start_date: "28-02-2025", duration: 0.5 },
-                { id: 5, text: "Pour Concrete & Set Posts", start_date: "28-02-2025", duration: 1 },
-                { id: 6, text: "Install 2x4 Rails", start_date: "01-03-2025", duration: 0.5 },
-                { id: 7, text: "Secure Rails w/ Brackets", start_date: "01-03-2025", duration: 0.5 },
-                { id: 8, text: "Attach Cedar Pickets", start_date: "02-03-2025", duration: 1 },
-                { id: 9, text: "Check & Adjust Alignment", start_date: "03-03-2025", duration: 0.5 },
-                { id: 10, text: "Clean-Up Site", start_date: "03-03-2025", duration: 0.5 },
-                { id: 11, text: "Inspection & Sign-Off", start_date: "04-03-2025", duration: 0.5 }
+                { id: 3, text: "Mark & Dig Post Holes", start_date: "28-02-2025", duration: 1 },
+                { id: 4, text: "Place & Secure Posts", start_date: "01-03-2025", duration: 1 },
+                { id: 5, text: "Pour Concrete & Set Posts", start_date: "02-03-2025", duration: 1 },
+                { id: 6, text: "Install 2x4 Rails", start_date: "03-03-2025", duration: 1 },
+                { id: 7, text: "Secure Rails w/ Brackets", start_date: "04-03-2025", duration: 1 },
+                { id: 8, text: "Attach Cedar Pickets", start_date: "05-03-2025", duration: 1 },
+                { id: 9, text: "Check & Adjust Alignment", start_date: "06-03-2025", duration: 1 },
+                { id: 10, text: "Clean-Up Site", start_date: "07-03-2025", duration: 1 },
+                { id: 11, text: "Final Inspection & Sign-Off", start_date: "08-03-2025", duration: 1 }
             ]
         });
+
+        // Enable Dragging & Editing
+        gantt.config.editable = true;
+
+        // Allow Editing Task Names & Durations
+        gantt.config.columns = [
+            { name: "text", label: "Task Name", tree: true, width: "*", editor: { type: "text" } },
+            { name: "start_date", label: "Start Date", align: "center", width: 100, editor: { type: "date" } },
+            { name: "duration", label: "Duration (Days)", align: "center", width: 80, editor: { type: "number" } },
+            { name: "delete", label: "❌", width: 40, align: "center", template: function (obj) { return "<button onclick='deleteTask(" + obj.id + ")'>X</button>"; } }
+        ];
+
+        // Delete Task Function
+        function deleteTask(id) {
+            if (confirm("Are you sure you want to delete this task?")) {
+                gantt.deleteTask(id);
+            }
+        }
+
+        // Allow Resizing & Moving Tasks
+        gantt.config.drag_move = true;
+        gantt.config.drag_resize = true;
+        gantt.config.drag_progress = true;
     </script>
+
 </body>
 </html>
