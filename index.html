@@ -19,10 +19,28 @@
             width: 100%;
             height: 90vh;
         }
-        select {
-            font-size: 14px;
+        .color-dropdown {
+            position: absolute;
+            display: none;
+            background: white;
+            border: 1px solid #ccc;
             padding: 5px;
+            z-index: 1000;
         }
+        .color-option {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            cursor: pointer;
+            margin: 2px;
+            border-radius: 50%;
+        }
+        .blue { background-color: #4A90E2; }
+        .green { background-color: #7ED321; }
+        .red { background-color: #D0021B; }
+        .purple { background-color: #9013FE; }
+        .orange { background-color: #F5A623; }
+        .yellow { background-color: #F8E71C; }
     </style>
 </head>
 <body>
@@ -30,9 +48,21 @@
     <h2 style="text-align: center;">Fence Installation Project - Editable Gantt Chart</h2>
     <div id="gantt_chart"></div>
 
+    <!-- Color Selection Dropdown (Hidden Until Task Click) -->
+    <div id="colorDropdown" class="color-dropdown">
+        <div class="color-option blue" onclick="setTaskColor('blue')"></div>
+        <div class="color-option green" onclick="setTaskColor('green')"></div>
+        <div class="color-option red" onclick="setTaskColor('red')"></div>
+        <div class="color-option purple" onclick="setTaskColor('purple')"></div>
+        <div class="color-option orange" onclick="setTaskColor('orange')"></div>
+        <div class="color-option yellow" onclick="setTaskColor('yellow')"></div>
+    </div>
+
     <script>
         // Initialize Gantt Chart
         gantt.init("gantt_chart");
+
+        let selectedTaskId = null;
 
         // Sample Task Data
         gantt.parse({
@@ -57,36 +87,30 @@
         gantt.config.drag_resize = true;
         gantt.config.drag_progress = true;
 
-        // Improved Left-Aligned Columns
-        gantt.config.columns = [
-            { name: "text", label: "Task Name", tree: true, width: 220, align: "left", editor: { type: "text" } },
-            { name: "start_date", label: "Start Date", align: "left", width: 120, editor: { type: "date" } },
-            { name: "duration", label: "Duration (Days)", align: "left", width: 100, editor: { type: "number" } },
-            { name: "color", label: "Color", align: "left", width: 150, template: function (obj) { 
-                return `<select onchange="changeColor(${obj.id}, this.value)">
-                            <option value="blue" ${obj.color === 'blue' ? 'selected' : ''}>Blue</option>
-                            <option value="green" ${obj.color === 'green' ? 'selected' : ''}>Green</option>
-                            <option value="red" ${obj.color === 'red' ? 'selected' : ''}>Red</option>
-                            <option value="purple" ${obj.color === 'purple' ? 'selected' : ''}>Purple</option>
-                            <option value="orange" ${obj.color === 'orange' ? 'selected' : ''}>Orange</option>
-                            <option value="yellow" ${obj.color === 'yellow' ? 'selected' : ''}>Yellow</option>
-                        </select>`;
-            }},
-            { name: "delete", label: "❌", width: 50, align: "center", template: function (obj) { 
-                return `<button onclick='deleteTask(${obj.id})'>X</button>`; 
-            }}
-        ];
+        // Show color dropdown when clicking a task
+        gantt.attachEvent("onTaskClick", function(id, e) {
+            selectedTaskId = id;
+            let dropdown = document.getElementById("colorDropdown");
+            dropdown.style.left = `${e.clientX}px`;
+            dropdown.style.top = `${e.clientY}px`;
+            dropdown.style.display = "block";
 
-        // Function to change task color
-        function changeColor(id, color) {
-            gantt.getTask(id).color = color;
-            gantt.refreshTask(id);
-        }
+            // Prevent event from closing immediately
+            e.stopPropagation();
+            return true;
+        });
 
-        // Delete Task Function
-        function deleteTask(id) {
-            if (confirm("Are you sure you want to delete this task?")) {
-                gantt.deleteTask(id);
+        // Hide dropdown if clicking outside
+        document.addEventListener("click", function() {
+            document.getElementById("colorDropdown").style.display = "none";
+        });
+
+        // Set the selected task color
+        function setTaskColor(color) {
+            if (selectedTaskId) {
+                gantt.getTask(selectedTaskId).color = color;
+                gantt.refreshTask(selectedTaskId);
+                document.getElementById("colorDropdown").style.display = "none";
             }
         }
 
