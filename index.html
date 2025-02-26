@@ -57,12 +57,12 @@
         gantt.config.drag_resize = true;
         gantt.config.drag_progress = true;
 
-        // Move tasks up/down
+        // Improved Left-Aligned Columns
         gantt.config.columns = [
-            { name: "text", label: "Task Name", tree: true, width: "*", editor: { type: "text" } },
-            { name: "start_date", label: "Start Date", align: "center", width: 100, editor: { type: "date" } },
-            { name: "duration", label: "Duration (Days)", align: "center", width: 80, editor: { type: "number" } },
-            { name: "color", label: "Color", align: "center", width: 80, template: function (obj) { 
+            { name: "text", label: "Task Name", tree: true, width: 220, align: "left", editor: { type: "text" } },
+            { name: "start_date", label: "Start Date", align: "left", width: 120, editor: { type: "date" } },
+            { name: "duration", label: "Duration (Days)", align: "left", width: 100, editor: { type: "number" } },
+            { name: "color", label: "Color", align: "left", width: 150, template: function (obj) { 
                 return `<select onchange="changeColor(${obj.id}, this.value)">
                             <option value="blue" ${obj.color === 'blue' ? 'selected' : ''}>Blue</option>
                             <option value="green" ${obj.color === 'green' ? 'selected' : ''}>Green</option>
@@ -72,7 +72,7 @@
                             <option value="yellow" ${obj.color === 'yellow' ? 'selected' : ''}>Yellow</option>
                         </select>`;
             }},
-            { name: "delete", label: "❌", width: 40, align: "center", template: function (obj) { 
+            { name: "delete", label: "❌", width: 50, align: "center", template: function (obj) { 
                 return `<button onclick='deleteTask(${obj.id})'>X</button>`; 
             }}
         ];
